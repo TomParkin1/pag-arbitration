@@ -1,0 +1,28 @@
+cff-version: 1.2.0
+message: "If you use this software, please cite it using these metadata."
+title: "pag-arbitration: PAG-inspired mode switching versus continuous blending under threat"
+type: software
+authors:
+  - family-names: Parkin
+    given-names: Thomas
+license: MIT
+version: 1.0.0
+date-released: "2026-11-13"
+repository-code: "https://github.com/TomParkin1/pag-arbitration"
+keywords:
+  - action selection
+  - arbitration
+  - periaqueductal grey
+  - simulation
+  - gymnasium
+preferred-citation:
+  type: thesis
+  title: "Do PAG-style mode switches beat continuous blending under threat? A simulation study of biologically-inspired arbitration"
+  authors:
+    - family-names: Parkin
+      given-names: Thomas
+  year: 2026
+  thesis-type: "BSc dissertation"
+  institution:
+    name: "University of Sheffield"
+  department: "School of Computer Science"
