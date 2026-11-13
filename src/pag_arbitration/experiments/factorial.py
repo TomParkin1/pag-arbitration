@@ -1,6 +1,6 @@
 """Full factorial sweep: controller x threat x observation noise x delay.
 
-Produces the headline results (dissertation Section 5.2): survival, metabolic
+Produces the headline results (dissertation Sections 5.1-5.2): survival, metabolic
 cost (normalised AUC) and recovery time per controller across threat levels,
 plus Cohen's d effect sizes for PAG versus SWITCH.
 """

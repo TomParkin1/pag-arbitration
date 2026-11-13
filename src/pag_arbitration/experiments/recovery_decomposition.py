@@ -3,7 +3,7 @@
 Splits each episode's energy deficits into "true" recoveries (closed while
 the agent is alive) and a "terminal" deficit still open at death. The
 environment's recovery metric counts both, which can flatter controllers that
-die quickly; this decomposition separates the two (dissertation Section 6).
+die quickly; this decomposition separates the two (dissertation Appendix A.2).
 """
 
 from __future__ import annotations
