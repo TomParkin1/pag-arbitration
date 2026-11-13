@@ -37,3 +37,29 @@ def cohens_d(group1: Sequence[float] | np.ndarray, group2: Sequence[float] | np.
     if pooled_std == 0:
         return 0.0
     return float((np.mean(group1) - np.mean(group2)) / pooled_std)
+
+
+def bootstrap_cohens_d_ci(
+    group1: np.ndarray,
+    group2: np.ndarray,
+    *,
+    n_resamples: int = 2000,
+    seed: int = 42,
+    confidence: float = 0.95,
+) -> tuple[float, float]:
+    """Percentile-bootstrap confidence interval for :func:`cohens_d`.
+
+    Each resample draws both groups independently with replacement (group1
+    first, then group2) from a generator seeded with ``seed``, so the interval
+    is reproducible.
+    """
+    rng = np.random.default_rng(seed)
+    ds = np.empty(n_resamples)
+    for i in range(n_resamples):
+        ds[i] = cohens_d(
+            rng.choice(group1, len(group1)),
+            rng.choice(group2, len(group2)),
+        )
+    tail = (1 - confidence) / 2 * 100
+    low, high = np.percentile(ds, [tail, 100 - tail])
+    return float(low), float(high)
