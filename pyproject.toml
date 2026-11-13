@@ -10,7 +10,8 @@ readme = "README.md"
 license = "MIT"
 license-files = ["LICENSE"]
 authors = [{ name = "Thomas Parkin" }]
-requires-python = ">=3.11"
+# pygame 2.6.1 has no wheels for Python 3.14 yet.
+requires-python = ">=3.11,<3.14"
 # Pinned to the exact versions used to generate the dissertation results.
 dependencies = [
     "gymnasium==1.2.3",
