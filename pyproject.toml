@@ -35,3 +35,29 @@ dev = [
 
 [tool.hatch.build.targets.wheel]
 packages = ["src/pag_arbitration"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py311"
+
+[tool.ruff.lint]
+select = ["E", "W", "F", "I", "B", "UP", "SIM", "RUF", "NPY", "PL"]
+ignore = [
+    "PLR0913", # experiment entry points legitimately take several keyword arguments
+    "PLR2004", # thresholds in tests and FSM tables read better inline
+    "PLC0415", # pygame is imported lazily so headless runs never load it
+]
+
+[tool.mypy]
+python_version = "3.11"
+strict = true
+warn_unreachable = true
+files = ["src", "tests"]
+
+[[tool.mypy.overrides]]
+module = ["gymnasium.*", "pygame.*"]
+ignore_missing_imports = true
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-q"
