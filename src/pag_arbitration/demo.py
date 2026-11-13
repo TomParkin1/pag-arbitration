@@ -1,7 +1,7 @@
 """Watch a controller in the environment, or run a few headless episodes.
 
 This is a sanity-check and demonstration tool; it is not used to produce any
-of the dissertation's results.
+of the dissertation's results. Run it with ``pag-arbitration demo``.
 """
 
 from __future__ import annotations
@@ -75,15 +75,3 @@ def _window_closed() -> bool:
     import pygame
 
     return any(event.type == pygame.QUIT for event in pygame.event.get())
-
-
-if __name__ == "__main__":
-    import argparse
-
-    parser = argparse.ArgumentParser(description="Watch a controller in a pygame window.")
-    parser.add_argument("--controller", choices=CONTROLLER_NAMES, default="PAG")
-    parser.add_argument("--seed", type=int, default=42)
-    parser.add_argument("--episodes", type=int, default=1)
-    parser.add_argument("--no-render", action="store_true", help="Run headless.")
-    args = parser.parse_args()
-    print(run_demo(args.controller, args.seed, args.episodes, render=not args.no_render))
