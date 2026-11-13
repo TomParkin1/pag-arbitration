@@ -9,7 +9,7 @@ python3.12 -m venv .venv && source .venv/bin/activate
 pip install -e ".[dev]"
 
 pag-arbitration all --config smoke                  # every experiment, ~10 s
-pag-arbitration all                                 # full dissertation run, ~1 min on 12 cores
+pag-arbitration all                                 # full dissertation run, ~35 s on 12 cores
 pag-arbitration demo --controller PAG               # pygame window
 
 ruff check . && ruff format --check .               # lint and format
