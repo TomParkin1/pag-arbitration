@@ -2,7 +2,7 @@
 
 The main study fixes beta = 2. This sweep runs BLEND at medium threat for
 beta in {0.5, 1, 2, 4, 8} to check that the comparison is not an artefact of
-that choice (dissertation Appendix A).
+that choice (dissertation Appendix A.4).
 """
 
 from __future__ import annotations
