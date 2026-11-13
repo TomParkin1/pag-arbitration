@@ -52,7 +52,3 @@ def run(
     df = pd.DataFrame(rows)
     write_csv(df, out_dir, "recovery_decomposition.csv")
     return df
-
-
-if __name__ == "__main__":
-    run(Path("results"))

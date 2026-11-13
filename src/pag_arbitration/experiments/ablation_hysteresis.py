@@ -119,7 +119,3 @@ def run(
     )
     plot_results(df, out_dir / "ablation_chattering.png")
     return df
-
-
-if __name__ == "__main__":
-    run(Path("results"))

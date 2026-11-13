@@ -138,7 +138,3 @@ def run(
         title="Cohen's d: PAG vs Switch by Threat Level",
     )
     return df
-
-
-if __name__ == "__main__":
-    run(Path("results"))

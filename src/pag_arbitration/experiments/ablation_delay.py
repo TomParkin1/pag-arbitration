@@ -114,7 +114,3 @@ def run(
     )
     plot_results(df, out_dir / "ablation_delay_degradation.png")
     return df
-
-
-if __name__ == "__main__":
-    run(Path("results"))

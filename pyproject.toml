@@ -25,6 +25,9 @@ classifiers = [
     "Topic :: Scientific/Engineering :: Artificial Intelligence",
 ]
 
+[project.scripts]
+pag-arbitration = "pag_arbitration.cli:main"
+
 [project.optional-dependencies]
 dev = [
     "mypy==2.4.1",
