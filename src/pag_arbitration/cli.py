@@ -101,7 +101,7 @@ def build_parser() -> argparse.ArgumentParser:
 
 
 def _run_experiments(names: Sequence[str], args: argparse.Namespace) -> None:
-    episodes = args.episodes or CONFIG_EPISODES[args.config]
+    episodes = CONFIG_EPISODES[args.config] if args.episodes is None else args.episodes
     if episodes < 1:
         raise SystemExit("--episodes must be at least 1.")
     print(f"Writing results to {args.out_dir}/ ({episodes} episodes per condition)")
