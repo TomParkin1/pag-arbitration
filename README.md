@@ -219,13 +219,16 @@ ignores energy and reacts only to predator distance d:
 
 ```mermaid
 stateDiagram-v2
-    [*] --> DEFAULT
-    DEFAULT --> FLIGHT: d < 20
-    DEFAULT --> FREEZE: 20 ≤ d < 40
-    FREEZE --> FLIGHT: d < 20
-    FREEZE --> DEFAULT: d > 55
-    FLIGHT --> FREEZE: 30 < d < 55
-    FLIGHT --> DEFAULT: d ≥ 55
+    state "DEFAULT" as Normal
+    state "FREEZE" as Freeze
+    state "FLIGHT" as Flight
+    [*] --> Normal
+    Normal --> Flight: d below 20
+    Normal --> Freeze: d from 20 to 40
+    Freeze --> Flight: d below 20
+    Freeze --> Normal: d above 55
+    Flight --> Freeze: d from 30 to 55
+    Flight --> Normal: d 55 or more
 ```
 
 In DEFAULT the agent acts like Switch, in FREEZE it stops dead, and in FLIGHT
