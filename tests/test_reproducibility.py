@@ -3,6 +3,11 @@
 Values are copied from factorial_master_data.csv as generated for the
 dissertation. A small sample of seeds is enough to catch any change to the
 environment dynamics, the controllers or the RNG call order.
+
+Survival steps must match exactly. The AUC is compared to a relative tolerance
+of 1e-5: it is bit-identical on the machine that produced the dissertation
+(Apple M2 Pro), but float32 rounding in NumPy's vectorised maths differs
+slightly between CPUs, so Linux CI agrees only to about 1e-6.
 """
 
 from __future__ import annotations
@@ -34,7 +39,7 @@ def test_matches_dissertation(case: tuple[str, str, float, int, int, int, float]
     spec = EpisodeSpec(controller=controller, threat=threat, noise=noise, delay=delay, seed=seed)
     result = run_episode(spec)
     assert result.survival_steps == steps
-    assert result.normalised_auc == pytest.approx(auc, rel=1e-9, abs=1e-12)
+    assert result.normalised_auc == pytest.approx(auc, rel=1e-5, abs=1e-9)
 
 
 def test_same_seed_same_result() -> None:
