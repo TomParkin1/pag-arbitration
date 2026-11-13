@@ -104,6 +104,8 @@ def _run_experiments(names: Sequence[str], args: argparse.Namespace) -> None:
     episodes = CONFIG_EPISODES[args.config] if args.episodes is None else args.episodes
     if episodes < 1:
         raise SystemExit("--episodes must be at least 1.")
+    if args.workers is not None and args.workers < 1:
+        raise SystemExit("--workers must be at least 1.")
     print(f"Writing results to {args.out_dir}/ ({episodes} episodes per condition)")
     for name in names:
         start = time.perf_counter()
@@ -119,6 +121,8 @@ def main(argv: Sequence[str] | None = None) -> None:
     if args.command == "demo":
         from pag_arbitration.demo import run_demo
 
+        if args.episodes < 1:
+            raise SystemExit("--episodes must be at least 1.")
         df = run_demo(
             controller=args.controller,
             seed=args.seed,
@@ -128,7 +132,10 @@ def main(argv: Sequence[str] | None = None) -> None:
         )
         print(df.to_string(index=False))
     elif args.command == "analyse":
-        analysis.run(args.out_dir)
+        if not analysis.run(args.out_dir):
+            raise SystemExit(
+                f"No experiment CSVs found in {args.out_dir}/; run an experiment first."
+            )
     elif args.command == "all":
         _run_experiments(list(EXPERIMENTS), args)
         analysis.run(args.out_dir)

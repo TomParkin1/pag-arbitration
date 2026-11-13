@@ -26,6 +26,13 @@ def test_demo_headless(capsys: pytest.CaptureFixture[str]) -> None:
     assert "survival_steps" in capsys.readouterr().out
 
 
-def test_rejects_invalid_episode_count(tmp_path: Path) -> None:
-    with pytest.raises(SystemExit):
-        main(["ablation-hysteresis", "--episodes", "0", "--out-dir", str(tmp_path)])
+@pytest.mark.parametrize("bad", [["--episodes", "0"], ["--workers", "0"], ["--workers", "-2"]])
+def test_rejects_invalid_run_options(tmp_path: Path, bad: list[str]) -> None:
+    with pytest.raises(SystemExit, match="must be at least 1"):
+        main(["ablation-hysteresis", *bad, "--out-dir", str(tmp_path)])
+
+
+def test_analyse_fails_without_data(tmp_path: Path) -> None:
+    with pytest.raises(SystemExit, match="No experiment CSVs"):
+        main(["analyse", "--out-dir", str(tmp_path / "empty")])
+    assert not (tmp_path / "empty").exists()

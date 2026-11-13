@@ -5,10 +5,10 @@ results were produced by ad-hoc steps that were not bundled with the code:
 the median/IQR survival table, the bootstrap confidence intervals on Cohen's d,
 the switch-rate analysis of the hysteresis ablation, the low-threat survival
 distribution figure and the noise x delay figure. This module regenerates them
-from the experiment outputs and checks that they match the reported numbers
-(bootstrap: 2,000 percentile resamples, seed 42). The point estimates match
-exactly; because the original resampling stream was not recorded, a few
-bootstrap interval bounds differ from the dissertation by up to 0.02.
+from the experiment outputs (bootstrap: 2,000 percentile resamples, seed 42).
+Run on the full-configuration data, every point estimate equals the value in
+the dissertation; because the original resampling stream was not recorded, a
+few bootstrap interval bounds differ from it by up to 0.02.
 
 It reads whichever CSVs exist in ``out_dir`` and skips the rest, then writes
 ``summary.md`` with every headline table.
@@ -30,6 +30,13 @@ from pag_arbitration.stats import bootstrap_cohens_d_ci, ci95, cohens_d
 
 BOOTSTRAP_RESAMPLES = 2000
 BOOTSTRAP_SEED = 42
+INPUT_FILES = (
+    "factorial_master_data.csv",
+    "ablation_hysteresis_data.csv",
+    "ablation_delay_noise_data.csv",
+    "recovery_decomposition.csv",
+    "sensitivity_beta_data.csv",
+)
 EFFECT_SIZE_METRICS = {
     "Survival_Steps": "Survival steps",
     "Normalised_AUC": "Normalised AUC",
@@ -228,8 +235,13 @@ def _read(out_dir: Path, name: str) -> pd.DataFrame | None:
     return pd.read_csv(path)
 
 
-def run(out_dir: Path) -> None:
-    """Build every available table and figure from the CSVs in ``out_dir``."""
+def run(out_dir: Path) -> bool:
+    """Build every available table and figure from the CSVs in ``out_dir``.
+
+    Returns False (writing nothing) if none of the experiment CSVs exist.
+    """
+    if not any((out_dir / name).exists() for name in INPUT_FILES):
+        return False
     sections: list[str] = ["# Results summary", ""]
 
     factorial = _read(out_dir, "factorial_master_data.csv")
@@ -244,7 +256,7 @@ def run(out_dir: Path) -> None:
         effects = bootstrap_effect_sizes(factorial)
         write_csv(effects, out_dir, "effect_sizes_bootstrap.csv")
         sections += [
-            "## Cohen's d, PAG vs SWITCH (95% bootstrap CI)",
+            "## Cohen's d, PAG vs Switch (95% bootstrap CI)",
             _markdown_table(effects),
             "",
         ]
@@ -254,7 +266,7 @@ def run(out_dir: Path) -> None:
     if hysteresis is not None:
         hyst = hysteresis_summary(hysteresis)
         write_csv(hyst, out_dir, "hysteresis_summary.csv")
-        sections += ["## Hysteresis ablation (medium threat)", _markdown_table(hyst, ".4f"), ""]
+        sections += ["## Hysteresis ablation (medium threat)", _markdown_table(hyst, ".4g"), ""]
 
     delay_noise = _read(out_dir, "ablation_delay_noise_data.csv")
     if delay_noise is not None:
@@ -281,9 +293,10 @@ def run(out_dir: Path) -> None:
     beta = _read(out_dir, "sensitivity_beta_data.csv")
     if beta is not None:
         b = beta.groupby("Beta")[["Survival_Steps", "Normalised_AUC"]].mean().reset_index()
-        sections += ["## BLEND sensitivity to beta (medium threat)", _markdown_table(b), ""]
+        sections += ["## Blend sensitivity to beta (medium threat)", _markdown_table(b), ""]
 
     out_dir.mkdir(parents=True, exist_ok=True)
     summary_path = out_dir / "summary.md"
     summary_path.write_text("\n".join(sections), encoding="utf-8")
     print(f"Saved {summary_path}")
+    return True

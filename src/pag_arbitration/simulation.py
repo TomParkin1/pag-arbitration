@@ -130,7 +130,9 @@ def run_sweep(
     progress: Callable[[str], None] | None = print,
 ) -> list[EpisodeResult]:
     """Run episodes in parallel; results are returned in the same order as ``specs``."""
-    workers = workers or default_workers()
+    workers = default_workers() if workers is None else workers
+    if workers < 1:
+        raise ValueError(f"workers must be at least 1, got {workers}.")
     if progress:
         progress(f"[{label}] {len(specs)} episodes on {workers} worker(s)...")
     if workers == 1:
