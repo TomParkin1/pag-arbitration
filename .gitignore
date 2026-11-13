@@ -17,8 +17,11 @@ env/
 .coverage
 htmlcov/
 
-# Generated experiment outputs
+# Generated experiment outputs (scripts currently write to the working directory)
 results/
+/*.csv
+/*.png
+.ipynb_checkpoints/
 
 # Secrets and local config
 .env

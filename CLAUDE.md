@@ -9,7 +9,11 @@ python3.12 -m venv .venv && source .venv/bin/activate
 pip install -e ".[dev]"
 
 python scripts/verify_fsm.py                        # FSM and delay-buffer checks
-python -m pag_arbitration.experiments.evaluate      # full factorial sweep (minutes)
+python -m pag_arbitration.experiments.evaluate      # full factorial sweep (~15 s on 12 cores)
+
+ruff check . && ruff format --check .               # lint and format
+mypy src                                            # type check
+pytest -q                                           # tests (suite added in Phase 4)
 ```
 
 ## Conventions
@@ -18,4 +22,5 @@ python -m pag_arbitration.experiments.evaluate      # full factorial sweep (minu
 - Simulation behaviour must not change: per-seed results must reproduce the
   dissertation exactly. Compare outputs against a baseline run before merging
   any change to `environment.py`, `controller.py` or the episode loop.
-- Generated outputs go in `results/` (gitignored); never commit CSVs or run outputs.
+- Never commit generated CSVs or figures; run experiments from a scratch directory
+  (or `results/`, which is gitignored).
