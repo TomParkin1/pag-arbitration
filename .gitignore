@@ -17,7 +17,7 @@ env/
 .coverage
 htmlcov/
 
-# Generated experiment outputs (scripts currently write to the working directory)
+# Generated experiment outputs
 results/
 /*.csv
 /*.png
