@@ -41,7 +41,3 @@ def run(
     )
     write_csv(df, out_dir, "sensitivity_beta_data.csv")
     return df
-
-
-if __name__ == "__main__":
-    run(Path("results"))

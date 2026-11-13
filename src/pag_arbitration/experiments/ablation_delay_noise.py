@@ -47,7 +47,3 @@ def run(
     )
     write_csv(df, out_dir, "ablation_delay_noise_data.csv")
     return df
-
-
-if __name__ == "__main__":
-    run(Path("results"))
