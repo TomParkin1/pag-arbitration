@@ -33,3 +33,6 @@ results/
 *.swp
 .DS_Store
 .claude/
+
+# Local assistant instructions
+CLAUDE.md
